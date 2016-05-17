@@ -3,6 +3,7 @@ __author__ = 'thecomet'
 import time
 import pygame
 from updateable import Updateable
+from player import Player
 
 
 class Window(Updateable):
@@ -13,6 +14,9 @@ class Window(Updateable):
 
         self.updateable_items = list()
         self.updateable_items.append(self)
+
+        # load a player
+        self.updateable_items.append(Player((50, 50)))
 
         self.__last_time_updated = None
         self.__running = None
