@@ -3,6 +3,9 @@ __author__ = 'thecomet'
 
 class Updateable(object):
 
+    def __init__(self, window):
+        self.window = window
+
     def process_event(self, event):
         pass
 

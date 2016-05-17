@@ -16,7 +16,7 @@ class Window(Updateable):
         self.updateable_items.append(self)
 
         # load a player
-        self.updateable_items.append(Player((50, 50)))
+        self.updateable_items.append(Player(self, (50, 50)))
 
         self.__last_time_updated = None
         self.__running = None
