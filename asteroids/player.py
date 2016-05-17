@@ -14,10 +14,13 @@ class Player(AnimatedSprite):
         super(Player, self).__init__(window, os.path.join("res", "images", "player.png"), 2, 1)
         self.position = list(position)
         self.__input = 0
-        self.__acceleration = 300
+        self.__acceleration = 400
+        self.__stop_acceleration = 70
         self.__velocity = [0, 0]
-        self.__max_velocity = 0.5
-        self.__rotation_speed = 100
+        self.__max_velocity = 600
+        self.__rotation_speed = 200
+
+        self.set_frame_length(0.08)
 
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -54,15 +57,27 @@ class Player(AnimatedSprite):
         if self.__input & self.RIGHT:                 self.angle += time_step * self.__rotation_speed
 
     def __hit_the_gas_bro(self, time_step):
+        """
+        Hits the gas, bro (updates player position depending on the "gas" input button).
+        """
+        # Is the player pressing the gas button? Integrate acceleration to get velocity.
         if self.__input & self.HIT_THE_GAS_PEDAL_BRO:
             self.__velocity[0] += -math.sin(self.angle/180*math.pi) * self.__acceleration * time_step
             self.__velocity[1] += -math.cos(self.angle/180*math.pi) * self.__acceleration * time_step
+
+            # limit the maximum velocity
+            if self.__velocity[0]**2 + self.__velocity[1]**2 > self.__max_velocity**2:
+                vector_length = math.sqrt(self.__velocity[0]**2 + self.__velocity[1]**2)
+                self.__velocity[0] = self.__velocity[0] / vector_length * self.__max_velocity
+                self.__velocity[1] = self.__velocity[1] / vector_length * self.__max_velocity
+
+        # The player is not pressing the gas button, slowly
         else:
             vector_length = math.sqrt(self.__velocity[0]**2 + self.__velocity[1]**2)
             if not vector_length == 0:
                 normalized = [self.__velocity[0] / vector_length, self.__velocity[1] / vector_length]
-                self.__velocity[0] -= normalized[0] * time_step
-                self.__velocity[1] -= normalized[1] * time_step
+                self.__velocity[0] -= normalized[0] * self.__stop_acceleration * time_step
+                self.__velocity[1] -= normalized[1] * self.__stop_acceleration * time_step
         self.position[0] += self.__velocity[0] * time_step
         self.position[1] += self.__velocity[1] * time_step
 
