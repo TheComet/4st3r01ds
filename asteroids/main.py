@@ -2,7 +2,7 @@ __author__ = 'thecomet'
 
 import sys
 import pygame
-from Window import Window
+from window import Window
 
 if __name__ == '__main__':
     pygame.init()

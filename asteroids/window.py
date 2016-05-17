@@ -2,7 +2,7 @@ __author__ = 'thecomet'
 
 import time
 import pygame
-from Updateable import Updateable
+from updateable import Updateable
 
 
 class Window(Updateable):
